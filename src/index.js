@@ -1,50 +1,46 @@
-const launchDevTools = require('./launchDevTools');
+const { updateDevTools, launchDevTools } = require('./devtools');
 const { setDebugFn } = require('./debug');
 
 const DEFAULT_KEY = 'd';
 
-let pidAwaitingDebugger = null;
+/**
+ * Determines if we can launch the debugger for the specified process.
+ *
+ * Only Node processes instrumented with `custody-probe>=0.3.0` can be debugged.
+ *
+ * @param {Process} process - A custody process.
+ *
+ * @return {Boolean} `true` iff we can debug the process.
+ */
+function canDebugProcess(process) {
+  // The first condition here filters for the use of `custody-probe` (and processes being Node). The
+  // second filters for `custody-probe>=0.3.0`, which provides us `child.pid` and
+  // `child.inspectorUrl` as well as overriding 'SIGUSR1' handling to dynamically assign a port to
+  // the inspector.
+  return process.child && process.child.pid;
+}
 
 module.exports = function({ debug }) {
   setDebugFn(debug);
 
   return {
-    // TODO(jeff): Reconnect the debugger if the user restarts the process.
     update(process) {
-      if (!process.child || (process.child.pid !== pidAwaitingDebugger) || !process.child.inspectorUrl) {
-        return;
-      }
+      if (!canDebugProcess(process)) return;
 
-      launchDevTools(process.child.inspectorUrl).catch((err) => {
-        debug('Could not launch debugger:', err);
-      });
-      pidAwaitingDebugger = null;
+      updateDevTools(process).catch((e) => debug('Could not launch debugger:', e));
     },
 
     commands(process, { opts }) {
-      if (!process.child || !process.child.pid) {
-        // The process is not instrumented with `custody-probe>=0.3.0`. Reliance on `custody-probe`
-        // also conveniently filters for Node processes.
-        return [];
-      }
+      if (!canDebugProcess(process)) return [];
 
       return [
         [opts.key || DEFAULT_KEY, {
-          get verb() {
-            return 'launch debugger';
-          },
-
-          async toggle() {
-            // Start the debugger if necessary. We'll then launch DevTools when the process updates
-            // with the inspector URL.
-            if (!process.child.inspectorUrl) {
-              pidAwaitingDebugger = process.child.pid;
-              global.process.kill(process.child.pid, 'SIGUSR1');
-              return;
-            }
-
-            // The debugger was previously started. Launch the client now.
-            return launchDevTools(process.child.inspectorUrl);
+          verb: 'launch debugger',
+          toggle: () => {
+            return launchDevTools(process, {
+              // Bring DevTools to the foreground if it was previously open.
+              activateAfterLaunch: true
+            });
           }
         }]
       ];

@@ -20,7 +20,7 @@ function canDebugProcess(process) {
   return process.child && process.child.pid;
 }
 
-module.exports = function({ debug }) {
+module.exports = function({ debug }, opts) {
   setDebugFn(debug);
 
   return {
@@ -30,7 +30,7 @@ module.exports = function({ debug }) {
       updateDevTools(process).catch((e) => debug('Could not launch debugger:', e));
     },
 
-    commands(process, { opts }) {
+    commands(process) {
       if (!canDebugProcess(process)) return [];
 
       return [

@@ -79,9 +79,9 @@ class DevToolsClient extends EventEmitter {
 
     if (!needToInitializeDevTools) return;
 
-    // The first time that DevTools is opened for any page it will open to the Elements tab. Switch to
-    // the Sources tab (two tabs to the right) and open the Console. Once we've done this for one tab
-    // we won't need to do for another, it'll use the same settings.
+    // The first time that DevTools is opened for any page it will open to the Console tab. Switch
+    // to the Sources tab (one tabs to the right) and open the Console. Once we've done this for one
+    // tab we won't need to do for another, it'll use the same settings.
     //
     // Ideally we would switch tabs just by clicking on the tab, it has a unique ID; but for some
     // reason the tabs don't respond to `click()` at least not when playing around in the console.
@@ -94,7 +94,6 @@ class DevToolsClient extends EventEmitter {
       });
 
       await page.keyboard.down('Meta');
-      await page.keyboard.press('BracketRight');
       await page.keyboard.press('BracketRight');
       await page.keyboard.up('Meta');
 
@@ -116,7 +115,7 @@ class DevToolsClient extends EventEmitter {
     // convenient for the user as well as because chrome://inspect only shows servers on the
     // standard port.
     const queryUrl = this.inspectorUrl.replace(/^wss?:\/\//, '');
-    await this._page.goto(`chrome-devtools://devtools/bundled/inspector.html?experiments=true&v8only=true&ws=${queryUrl}`);
+    await this._page.goto(`chrome-devtools://devtools/bundled/js_app.html?experiments=true&v8only=true&ws=${queryUrl}`);
 
     if (this._title) {
       await this._page.evaluate((title) => {

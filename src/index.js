@@ -1,10 +1,13 @@
 const launchDevTools = require('./launchDevTools');
+const { setDebugFn } = require('./debug');
 
 const DEFAULT_KEY = 'd';
 
 let pidAwaitingDebugger = null;
 
 module.exports = function({ debug }) {
+  setDebugFn(debug);
+
   return {
     // TODO(jeff): Reconnect the debugger if the user restarts the process.
     update(process) {

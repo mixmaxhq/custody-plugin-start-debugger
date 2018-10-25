@@ -1,6 +1,6 @@
 {
   "name": "@custody/plugin-command-start-debugger",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Custody plugin to add a command to start the Node debugger",
   "main": "src/index.js",
   "scripts": {

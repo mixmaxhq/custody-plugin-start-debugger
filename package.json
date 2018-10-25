@@ -18,6 +18,9 @@
   ],
   "author": "Jeff Wear <jeffreywear@gmail.com>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/mixmaxhq/custody-plugin-command-start-debugger/issues"
   },

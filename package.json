@@ -1,0 +1,35 @@
+{
+  "name": "@custody/plugin-command-start-debugger",
+  "version": "1.0.0",
+  "description": "Custody plugin to add a command to start the Node debugger",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mixmaxhq/custody-plugin-command-start-debugger.git"
+  },
+  "keywords": [
+    "custody",
+    "plugin",
+    "command",
+    "debugger"
+  ],
+  "author": "Jeff Wear <jeffreywear@gmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/mixmaxhq/custody-plugin-command-start-debugger/issues"
+  },
+  "homepage": "https://github.com/mixmaxhq/custody-plugin-command-start-debugger#readme",
+  "devDependencies": {
+    "eslint": "^5.6.1",
+    "eslint-config-mixmax": "^2.0.0"
+  },
+  "dependencies": {
+    "puppeteer": "^1.9.0"
+  }
+}

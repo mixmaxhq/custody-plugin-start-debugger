@@ -25,7 +25,7 @@ npm install -g @custody/plugin-command-start-debugger
 ```
 
 Then launch `custody-cli settings` and add "@custody/plugin-command-start-debugger" to your
-`.custodyrc`.
+`.custodyrc`. Finally, restart `custody-cli` to get it to pick up the new plugin.
 
 This module requires that you instrument every process you wish to debug with
 [@custody/probe](https://github.com/mixmaxhq/custody-probe/#installation), please configure that

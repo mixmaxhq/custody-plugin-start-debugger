@@ -76,12 +76,11 @@ async function launchDevTools(process, { activateAfterLaunch = false } = {}) {
     await client.launch();
 
     if (activateAfterLaunch) await client.activate();
-
   } else {
     if (!process.child.inspectorUrl) startDebugger(process);
 
     client = new DevToolsClient(process.child.inspectorUrl, {
-      title: process.name
+      title: process.name,
     });
 
     if (client.inspectorUrl) {
@@ -125,10 +124,10 @@ async function updateDevTools(process) {
   // The URL is up to date.
   if (client.inspectorUrl === process.child.inspectorUrl) return;
 
-  return launchDevTools(process);
+  await launchDevTools(process);
 }
 
 module.exports = {
   launchDevTools,
-  updateDevTools
+  updateDevTools,
 };

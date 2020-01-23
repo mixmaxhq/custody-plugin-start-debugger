@@ -32,7 +32,7 @@ class DevToolsClient extends EventEmitter {
   async launch() {
     if (this._page) return;
 
-    if (!this.inspectorUrl) throw new Error('Can\'t launch without inspector URL');
+    if (!this.inspectorUrl) throw new Error("Can't launch without inspector URL");
 
     // Launch DevTools. We do this using puppeteer because you can't open `chrome://` URLs
     // from the terminal: https://stackoverflow.com/a/35632573
@@ -46,7 +46,7 @@ class DevToolsClient extends EventEmitter {
     // We cache our browser instance so that the user opens multiple debuggers in tabs vs. in new
     // browsers.
     let page;
-    let needToInitializeDevTools = false;  // See where this is used below.
+    let needToInitializeDevTools = false; // See where this is used below.
     if (!browser) {
       needToInitializeDevTools = true;
 
@@ -54,7 +54,7 @@ class DevToolsClient extends EventEmitter {
         // So the user can see DevTools.
         headless: false,
         // Disable the default viewport so that DevTools will fill the window.
-        defaultViewport: null
+        defaultViewport: null,
       });
 
       // Clear our variable if/when the user quits the browser it so we'll launch another
@@ -90,7 +90,7 @@ class DevToolsClient extends EventEmitter {
       // this element.
       await page.waitForSelector('.tabbed-pane.insertion-point-main', {
         visible: true,
-        timeout: 5000
+        timeout: 5000,
       });
 
       await page.keyboard.down('Meta');
@@ -101,7 +101,7 @@ class DevToolsClient extends EventEmitter {
       // effective proxy.
       await page.waitForSelector('#sources-panel-sources-view', {
         visible: true,
-        timeout: 5000
+        timeout: 5000,
       });
 
       await page.keyboard.press('Escape');
@@ -115,7 +115,9 @@ class DevToolsClient extends EventEmitter {
     // convenient for the user as well as because chrome://inspect only shows servers on the
     // standard port.
     const queryUrl = this.inspectorUrl.replace(/^wss?:\/\//, '');
-    await this._page.goto(`chrome-devtools://devtools/bundled/js_app.html?experiments=true&v8only=true&ws=${queryUrl}`);
+    await this._page.goto(
+      `chrome-devtools://devtools/bundled/js_app.html?experiments=true&v8only=true&ws=${queryUrl}`
+    );
 
     if (this._title) {
       await this._page.evaluate((title) => {

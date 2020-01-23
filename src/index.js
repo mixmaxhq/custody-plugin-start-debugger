@@ -34,16 +34,19 @@ module.exports = function({ debug }, opts) {
       if (!canDebugProcess(process)) return [];
 
       return [
-        [opts.key || DEFAULT_KEY, {
-          verb: 'launch debugger',
-          toggle: () => {
-            return launchDevTools(process, {
-              // Bring DevTools to the foreground if it was previously open.
-              activateAfterLaunch: true
-            });
-          }
-        }]
+        [
+          opts.key || DEFAULT_KEY,
+          {
+            verb: 'launch debugger',
+            toggle() {
+              return launchDevTools(process, {
+                // Bring DevTools to the foreground if it was previously open.
+                activateAfterLaunch: true,
+              });
+            },
+          },
+        ],
       ];
-    }
+    },
   };
 };

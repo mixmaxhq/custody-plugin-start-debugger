@@ -124,7 +124,7 @@ async function updateDevTools(process) {
   // The URL is up to date.
   if (client.inspectorUrl === process.child.inspectorUrl) return;
 
-  return launchDevTools(process);
+  await launchDevTools(process);
 }
 
 module.exports = {
